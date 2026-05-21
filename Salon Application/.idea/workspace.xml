@@ -5,14 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89f2d157-e835-4376-a297-e98ce36b21da" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Salon Application.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/exceptions/APIException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/exceptions/ExceptionMessage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/exceptions/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/exceptions/ResourceNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/controller/ServiceOfferingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/controller/ServiceOfferingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/dto/ServiceDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/dto/ServiceDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/model/ServiceOffering.java" beforeDir="false" afterPath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/model/ServiceOffering.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/repository/ServiceOfferingRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/repository/ServiceOfferingRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/service/ServiceOfferingServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/service/ServiceOfferingServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,26 +53,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven.category-service [clean].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.CategoryServiceApplication.executor": "Run",
-    "Spring Boot.SalonServiceApplication.executor": "Run",
-    "Spring Boot.ServiceOfferingApplication.executor": "Run",
-    "git-widget-placeholder": "Merging main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/ASUS/Downloads/Telegram Desktop/Wd/JAVA Backend/Spring/Microservices/Salon-microservices/Salon Application/service-offering/src/main/java/com/ayush/service_offering/dto",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "project.propCompiler"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.category-service [clean].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.CategoryServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.SalonServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.ServiceOfferingApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/ASUS/Downloads/Telegram Desktop/Wd/JAVA Backend/Spring/Microservices/Salon-microservices/Salon Application&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propCompiler&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\ASUS\Downloads\Telegram Desktop\Wd\JAVA Backend\Spring\Microservices\Salon-microservices\Salon Application\service-offering\src\main\java\com\ayush\service_offering\dto" />

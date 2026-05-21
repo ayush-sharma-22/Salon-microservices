@@ -10,4 +10,6 @@ import java.util.Set;
 @Repository
 public interface ServiceOfferingRepository extends JpaRepository<ServiceOffering, Long> {
     Set<ServiceOffering> findBySalonId(Long id);
+
+    boolean existsByNameAndSalonId(String name, Long id);
 }
