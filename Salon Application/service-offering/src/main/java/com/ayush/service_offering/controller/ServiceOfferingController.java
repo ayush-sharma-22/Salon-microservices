@@ -5,6 +5,7 @@ import com.ayush.service_offering.dto.SalonDTO;
 import com.ayush.service_offering.dto.ServiceDTO;
 import com.ayush.service_offering.model.ServiceOffering;
 import com.ayush.service_offering.service.ServiceOfferingService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class ServiceOfferingController {
     private final ServiceOfferingService serviceOfferingService;
 
     @PostMapping
-    public ResponseEntity<ServiceDTO> createServices(@RequestBody ServiceDTO serviceDTO) {
+    public ResponseEntity<ServiceDTO> createServices(@Valid @RequestBody ServiceDTO serviceDTO) {
         CategoryDTO categoryDTO = new CategoryDTO();
         SalonDTO salonDTO = new SalonDTO();
         categoryDTO.setId(1L);
@@ -31,15 +32,13 @@ public class ServiceOfferingController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ServiceDTO> updateServices(@PathVariable Long id,
-                                                     @RequestBody ServiceDTO serviceDTO) {
+                                                     @Valid@RequestBody ServiceDTO serviceDTO) {
         ServiceDTO result = serviceOfferingService.updateService(id, serviceDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<Set<ServiceDTO>> getServicesBySalonId(@PathVariable Long id) {
-        CategoryDTO categoryDTO = new CategoryDTO();
-        Long categoryId = categoryDTO.getId();
+    @GetMapping("/{id}")
+    public ResponseEntity<Set<ServiceDTO>> getServicesBySalonId(@PathVariable Long id, @RequestParam(required = false) Long categoryId) {
         Set<ServiceDTO> result = serviceOfferingService.getServiceBySalonId(id, categoryId);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
