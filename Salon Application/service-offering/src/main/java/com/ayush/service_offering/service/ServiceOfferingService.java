@@ -14,4 +14,6 @@ public interface ServiceOfferingService {
     Set<ServiceDTO> getServiceBySalonId(Long id, Long categoryId);
 
     Set<ServiceDTO> getServiceByIds(Set<Long> ids);
+
+    ServiceDTO getServiceById(Long id);
 }

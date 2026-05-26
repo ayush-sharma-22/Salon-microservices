@@ -97,6 +97,12 @@ public class ServiceOfferingServiceImpl implements ServiceOfferingService {
                 modelMapper.map(serviceOffering, ServiceDTO.class)).collect(Collectors.toSet());
     }
 
+    @Override
+    public ServiceDTO getServiceById(Long id){
+        ServiceOffering service = serviceOfferingRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("No Service by id:"+id));
+        return modelMapper.map(service, ServiceDTO.class);
+    }
+
 
     private void validateService(ServiceDTO serviceDTO){
 
