@@ -5,17 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89f2d157-e835-4376-a297-e98ce36b21da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/exceptions/APIException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/exceptions/ExceptionMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/exceptions/GlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/exceptions/ResourceNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/booking-service/src/main/java/com/ayush/bookingservice/BookingServiceApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/booking-service/src/main/java/com/ayush/bookingservice/config/AppConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/booking-service/src/main/java/com/ayush/bookingservice/controller/BookingController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/booking-service/src/main/java/com/ayush/bookingservice/dto/BookingDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/booking-service/src/main/java/com/ayush/bookingservice/dto/BookingSlotDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/booking-service/src/main/java/com/ayush/bookingservice/dto/CategoryDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/booking-service/src/main/java/com/ayush/bookingservice/dto/SalonDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/booking-service/src/main/java/com/ayush/bookingservice/dto/SalonReport.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/booking-service/src/main/java/com/ayush/bookingservice/dto/ServiceDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/booking-service/src/main/java/com/ayush/bookingservice/dto/UserDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/booking-service/src/main/java/com/ayush/bookingservice/exception/APIException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/booking-service/src/main/java/com/ayush/bookingservice/exception/ExceptionMessage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/booking-service/src/main/java/com/ayush/bookingservice/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/booking-service/src/main/java/com/ayush/bookingservice/exception/ResourceNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/booking-service/src/main/java/com/ayush/bookingservice/model/Booking.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/booking-service/src/main/java/com/ayush/bookingservice/repository/BookingRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/booking-service/src/main/java/com/ayush/bookingservice/services/BookingService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/booking-service/src/main/java/com/ayush/bookingservice/services/BookingServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/controller/ServiceOfferingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/controller/ServiceOfferingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/dto/ServiceDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/dto/ServiceDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/model/ServiceOffering.java" beforeDir="false" afterPath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/model/ServiceOffering.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/repository/ServiceOfferingRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/repository/ServiceOfferingRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/service/ServiceOfferingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/service/ServiceOfferingService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/service/ServiceOfferingServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/service-offering/src/main/java/com/ayush/service_offering/service/ServiceOfferingServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -29,6 +41,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Enum" />
         <option value="Interface" />
         <option value="Class" />
       </list>
@@ -60,12 +73,13 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.BookingServiceApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.CategoryServiceApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.SalonServiceApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.ServiceOfferingApplication.executor&quot;: &quot;Run&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/ASUS/Downloads/Telegram Desktop/Wd/JAVA Backend/Spring/Microservices/Salon-microservices/Salon Application&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/ASUS/Downloads/Telegram Desktop/Wd/JAVA Backend/Spring/Microservices/Salon-microservices/Salon Application/booking-service/src/main/java/com/ayush/bookingservice/exception&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
@@ -74,6 +88,8 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\ASUS\Downloads\Telegram Desktop\Wd\JAVA Backend\Spring\Microservices\Salon-microservices\Salon Application\booking-service\src\main\java\com\ayush\bookingservice\exception" />
+      <recent name="C:\Users\ASUS\Downloads\Telegram Desktop\Wd\JAVA Backend\Spring\Microservices\Salon-microservices\Salon Application\booking-service\src\main\java\com\ayush\bookingservice\dto" />
       <recent name="C:\Users\ASUS\Downloads\Telegram Desktop\Wd\JAVA Backend\Spring\Microservices\Salon-microservices\Salon Application\service-offering\src\main\java\com\ayush\service_offering\dto" />
       <recent name="C:\Users\ASUS\Downloads\Telegram Desktop\Wd\JAVA Backend\Spring\Microservices\Salon Application\user-service\src\main\java\com\ayush\userservice" />
       <recent name="C:\Users\ASUS\Downloads\Telegram Desktop\Wd\JAVA Backend\Spring\Microservices\Salon Application\category-service\src\main\java\com\ayush" />
@@ -84,7 +100,21 @@
       <command value="mvn clean" />
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.ServiceOfferingApplication">
+  <component name="RunManager" selected="Spring Boot.BookingServiceApplication">
+    <configuration name="BookingServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UnknownPolicyInFreeMode" />
+      <module name="booking-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ayush.bookingservice.BookingServiceApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ayush.bookingservice.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="CategoryServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UnknownPolicyInFreeMode" />
       <module name="category-service" />
@@ -128,14 +158,16 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Spring Boot.BookingServiceApplication" />
       <item itemvalue="Spring Boot.ServiceOfferingApplication" />
       <item itemvalue="Spring Boot.CategoryServiceApplication" />
       <item itemvalue="Spring Boot.SalonServiceApplication" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.ServiceOfferingApplication" />
+        <item itemvalue="Spring Boot.BookingServiceApplication" />
         <item itemvalue="Spring Boot.CategoryServiceApplication" />
+        <item itemvalue="Spring Boot.ServiceOfferingApplication" />
         <item itemvalue="Spring Boot.SalonServiceApplication" />
       </list>
     </recent_temporary>
@@ -155,6 +187,19 @@
       <option name="presentableId" value="Default" />
       <updated>1779006781368</updated>
     </task>
+    <task id="LOCAL-00001" summary="Implement custom exception handling for service offering APIs">
+      <option name="closed" value="true" />
+      <created>1779338706375</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1779338706375</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Implement custom exception handling for service offering APIs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implement custom exception handling for service offering APIs" />
   </component>
 </project>
