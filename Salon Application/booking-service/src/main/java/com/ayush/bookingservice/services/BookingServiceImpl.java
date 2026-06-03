@@ -34,7 +34,7 @@ public class BookingServiceImpl implements  BookingService {
 
         boolean isSlotAvailable = isTimeSlotAvailable(salonDTO,bookingStartTime,bookingEndTime);
 
-        double totalPrice = services.stream().mapToDouble(ServiceDTO::getPrice).sum();
+        Integer totalPrice = (int) services.stream().mapToLong(ServiceDTO::getPrice).sum();
         Set<Long> ids = services.stream().map(ServiceDTO::getId).collect(Collectors.toSet());
 
         Booking booking = new Booking();
@@ -104,13 +104,13 @@ public class BookingServiceImpl implements  BookingService {
     public SalonReport getSalonReport(Long salonId) {
         List<Booking> bookings = bookingRepository.findBySalonId(salonId);
 
-        Double totalEarnings = bookings.stream().mapToDouble(Booking::getTotalPrice).sum();
+        Long totalEarnings = bookings.stream().mapToLong(Booking::getTotalPrice).sum();
         Integer totalBooking =  bookings.size();
 
         List<Booking> cancelledBookings = bookings.stream().filter(booking ->
                                             booking.getStatus() == BookingStatus.CANCELLED).toList();
 
-        Double totalRefunds = cancelledBookings.stream().mapToDouble(Booking::getTotalPrice).sum();
+        Long totalRefunds = cancelledBookings.stream().mapToLong(Booking::getTotalPrice).sum();
 
         SalonReport salonReport = new SalonReport();
         salonReport.setTotalEarnings(totalEarnings);

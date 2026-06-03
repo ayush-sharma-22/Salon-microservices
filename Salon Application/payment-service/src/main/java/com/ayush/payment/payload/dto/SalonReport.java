@@ -1,4 +1,4 @@
-package com.ayush.bookingservice.dto;
+package com.ayush.payment.payload.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

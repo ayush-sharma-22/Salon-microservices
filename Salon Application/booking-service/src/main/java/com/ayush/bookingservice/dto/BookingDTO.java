@@ -25,5 +25,5 @@ public class BookingDTO {
 
     private BookingStatus status = BookingStatus.PENDING;
 
-    private Double totalPrice;
+    private Integer totalPrice;
 }

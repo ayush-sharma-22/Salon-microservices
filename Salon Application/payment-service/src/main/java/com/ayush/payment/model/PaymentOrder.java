@@ -1,41 +1,38 @@
-package com.ayush.service_offering.model;
+package com.ayush.payment.model;
 
+import com.ayush.payment.enums.PaymentMethod;
+import com.ayush.payment.enums.PaymentOrderStatus;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalTime;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ServiceOffering {
-
+public class PaymentOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long paymentId;
 
     @Column(nullable = false)
-    private String name;
+    private PaymentOrderStatus status = PaymentOrderStatus.PENDING;
 
     @Column(nullable = false)
-    private String description;
+    private Long amount;
+
+    private String paymentLinkId;
 
     @Column(nullable = false)
-    private Long price;
+    private PaymentMethod paymentMethod;
 
     @Column(nullable = false)
-    private Integer duration;
+    private Long userId;
 
     @Column(nullable = false)
     private Long salonId;
 
     @Column(nullable = false)
-    private Long categoryId;
-
-    private String images;
-
+    private Long bookingId;
 }

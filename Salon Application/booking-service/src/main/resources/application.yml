@@ -1,0 +1,28 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: booking-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/bookingsdb
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:5000/eureka
+    register-with-eureka: true
+    fetch-registry: true
+  instance:        # ← 2 spaces indent, same level as client
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}

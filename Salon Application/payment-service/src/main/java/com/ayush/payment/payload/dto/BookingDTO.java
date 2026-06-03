@@ -1,39 +1,28 @@
-package com.ayush.bookingservice.model;
+package com.ayush.payment.payload.dto;
 
-import com.ayush.bookingservice.enums.BookingStatus;
-import jakarta.persistence.*;
+import com.ayush.payment.enums.BookingStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Set;
 
-@Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Booking {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@AllArgsConstructor
+public class BookingDTO {
     private Long id;
-
-    private Long salonId;
-
-    private Long customerId;
 
     private LocalDateTime startTime;
 
     private LocalDateTime endTime;
 
-    @ElementCollection
     private Set<Long> serviceIds;
 
     private BookingStatus status = BookingStatus.PENDING;
 
     private Integer totalPrice;
 
+    private Long salonId;
 }

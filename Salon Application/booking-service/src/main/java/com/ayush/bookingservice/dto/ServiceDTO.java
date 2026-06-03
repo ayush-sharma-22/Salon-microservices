@@ -23,7 +23,7 @@ public class ServiceDTO {
 
     @NotNull(message = "Price is required")
     @Positive(message = "Price must be greater than 0")
-    private Double price;
+    private Long price;
 
     @NotNull(message = "Duration is required")
     @Positive(message = "Duration must be greater than 0")

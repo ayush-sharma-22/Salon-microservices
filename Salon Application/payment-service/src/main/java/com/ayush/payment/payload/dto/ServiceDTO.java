@@ -1,4 +1,5 @@
-package com.ayush.service_offering.dto;
+package com.ayush.payment.payload.dto;
+
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
