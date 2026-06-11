@@ -4,6 +4,9 @@ import com.ayush.service_offering.dto.CategoryDTO;
 import com.ayush.service_offering.dto.SalonDTO;
 import com.ayush.service_offering.dto.ServiceDTO;
 import com.ayush.service_offering.service.ServiceOfferingService;
+import com.ayush.service_offering.service.client.CategoryFeignClient;
+import com.ayush.service_offering.service.client.SalonFeignClient;
+import com.ayush.service_offering.service.client.UserFeignClient;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -16,23 +19,25 @@ import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/services")
+@RequestMapping("/api/service-offering")
 public class ServiceOfferingController {
     private final ServiceOfferingService serviceOfferingService;
+    private final SalonFeignClient salonFeignClient;
+    private final CategoryFeignClient categoryFeignClient;
+    private final UserFeignClient userFeignClient;
 
-    @PostMapping
-    public ResponseEntity<ServiceDTO> createServices(@Valid @RequestBody ServiceDTO serviceDTO) {
-        CategoryDTO categoryDTO = new CategoryDTO();
-        SalonDTO salonDTO = new SalonDTO();
-        categoryDTO.setId(serviceDTO.getCategoryId());
-        salonDTO.setId(1L);
+    @PostMapping("/salon-owner")
+    public ResponseEntity<ServiceDTO> createServices(@Valid @RequestBody ServiceDTO serviceDTO, @RequestHeader("Authorization") String jwt) {
+        CategoryDTO categoryDTO = categoryFeignClient.getCategoryById(serviceDTO.getCategoryId()).getBody();
+        SalonDTO salonDTO = salonFeignClient.getSalonByOwnerId(jwt).getBody();
+
         ServiceDTO result = serviceOfferingService.createServices(serviceDTO, categoryDTO, salonDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/salon-owner/{id}")
     public ResponseEntity<ServiceDTO> updateServices(@PathVariable Long id,
-                                                     @Valid@RequestBody ServiceDTO serviceDTO) {
+                                                     @Valid @RequestBody ServiceDTO serviceDTO) {
         ServiceDTO result = serviceOfferingService.updateService(id, serviceDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

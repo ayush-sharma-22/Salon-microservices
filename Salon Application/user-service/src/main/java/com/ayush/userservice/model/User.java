@@ -1,5 +1,6 @@
 package com.ayush.userservice.model;
 
+import com.ayush.userservice.enums.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -20,20 +21,17 @@ public class User {
 
     private String fullName;
 
-    @NotBlank(message = "username is mandatory")
+    @Column(unique = true)
     private String username;
 
-    @NotBlank(message = " Email is mandatory")
-    @Email(message = "Email is invalid")
+    @Column(unique = true)
     private String email;
 
-    @NotBlank(message = " password is mandatory")
     private String password;
 
     private String phone;
 
-    @NotBlank(message = "role is mandatory")
-    private String role;
+    private UserRole role;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

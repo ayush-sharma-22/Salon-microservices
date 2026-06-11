@@ -20,5 +20,5 @@ public interface SalonRepository extends JpaRepository<Salon,Long> {
     )
     List<Salon> SearchSalons(@Param("keyword")  String keyword);
 
-    List<Salon> findByOwnerId(Long ownerId);
+    Salon findByOwnerId(Long ownerId);
 }

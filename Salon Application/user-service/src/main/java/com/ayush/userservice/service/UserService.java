@@ -15,4 +15,6 @@ public interface UserService {
     String deleteUser(Long id);
 
     User getUserById(Long id);
+
+    User getUserByJwt(String jwt);
 }

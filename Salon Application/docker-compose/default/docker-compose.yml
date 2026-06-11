@@ -1,0 +1,479 @@
+version: '3.8'
+
+services:
+
+  # ================================
+  # EUREKA SERVER
+  # ================================
+  eureka-service:
+    image: kennyack/eureka-service:v2
+    container_name: eureka-service
+    ports:
+      - "5000:5000"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - JAVA_OPTS=-Xms64m -Xmx256m
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - salon-network
+
+  # ================================
+  # GATEWAY SERVER
+  # ================================
+  gateway-server:
+    image: kennyack/gateway-server:v2
+    container_name: gateway-server
+    ports:
+      - "8000:8000"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - JAVA_OPTS=-Xms64m -Xmx256m
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-service:5000/eureka/
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://host.docker.internal:9090/realms/master
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKS_URI=http://host.docker.internal:9090/realms/master/protocol/openid-connect/certs
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      eureka-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - salon-network
+
+  # ================================
+  # DATABASES
+  # ================================
+  user-db:
+    image: mysql:8.0
+    container_name: user-db
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=userdb
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - salon-network
+
+  salon-db:
+    image: mysql:8.0
+    container_name: salon-db
+    ports:
+      - "3308:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=salondb
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - salon-network
+
+  category-db:
+    image: mysql:8.0
+    container_name: category-db
+    ports:
+      - "3309:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=categorydb
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - salon-network
+
+  services-db:
+    image: mysql:8.0
+    container_name: services-db
+    ports:
+      - "3310:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=servicesdb
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - salon-network
+
+  booking-db:
+    image: mysql:8.0
+    container_name: booking-db
+    ports:
+      - "3311:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=bookingsdb
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - salon-network
+
+  payment-db:
+    image: mysql:8.0
+    container_name: payment-db
+    ports:
+      - "3312:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=paymentdb
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - salon-network
+
+  notification-db:
+    image: mysql:8.0
+    container_name: notification-db
+    ports:
+      - "3315:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=notificationdb
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - salon-network
+
+  review-db:
+    image: mysql:8.0
+    container_name: review-db
+    ports:
+      - "3314:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=reviewdb
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - salon-network
+
+  # ================================
+  # MICROSERVICES
+  # ================================
+  user-service:
+    image: kennyack/user-service:v2
+    container_name: user-service
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - JAVA_OPTS=-Xms64m -Xmx256m
+      - SPRING_DATASOURCE_URL=jdbc:mysql://user-db:3306/userdb?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-service:5000/eureka/
+      - KEYCLOAK_URL=http://host.docker.internal:9090
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      eureka-service:
+        condition: service_healthy
+      user-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - salon-network
+
+  salon-service:
+    image: kennyack/salon-service:v2
+    container_name: salon-service
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - JAVA_OPTS=-Xms64m -Xmx256m
+      - SPRING_DATASOURCE_URL=jdbc:mysql://salon-db:3306/salondb?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-service:5000/eureka/
+    depends_on:
+      eureka-service:
+        condition: service_healthy
+      salon-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - salon-network
+
+  category-service:
+    image: kennyack/category-service:v2
+    container_name: category-service
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - JAVA_OPTS=-Xms64m -Xmx256m
+      - SPRING_DATASOURCE_URL=jdbc:mysql://category-db:3306/categorydb?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-service:5000/eureka/
+    depends_on:
+      eureka-service:
+        condition: service_healthy
+      category-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - salon-network
+
+  service-offering:
+    image: kennyack/service-offering-service:v2
+    container_name: service-offering
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - JAVA_OPTS=-Xms64m -Xmx256m
+      - SPRING_DATASOURCE_URL=jdbc:mysql://services-db:3306/servicesdb?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-service:5000/eureka/
+    depends_on:
+      eureka-service:
+        condition: service_healthy
+      services-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - salon-network
+
+  booking-service:
+    image: kennyack/booking-service:v2
+    container_name: booking-service
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - JAVA_OPTS=-Xms64m -Xmx256m
+      - SPRING_DATASOURCE_URL=jdbc:mysql://booking-db:3306/bookingsdb?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-service:5000/eureka/
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=salon-kafka:9092
+    depends_on:
+      eureka-service:
+        condition: service_healthy
+      booking-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8084/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - salon-network
+
+  payment-service:
+    image: kennyack/payment-service:v2
+    container_name: payment-service
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - JAVA_OPTS=-Xms64m -Xmx256m
+      - SPRING_DATASOURCE_URL=jdbc:mysql://payment-db:3306/paymentdb?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-service:5000/eureka/
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=salon-kafka:9092
+      - STRIPE_API_SECRET=${STRIPE_API_SECRET:-your_stripe_api_secret_here}
+      - STRIPE_API_KEY=${STRIPE_API_KEY:-your_stripe_api_key_here}
+      - RAZORPAY_API_KEY=${RAZORPAY_API_KEY:-your_razorpay_api_key_here}
+      - RAZORPAY_API_SECRET=${RAZORPAY_API_SECRET:-your_razorpay_api_secret_here}
+    depends_on:
+      eureka-service:
+        condition: service_healthy
+      payment-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8085/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - salon-network
+
+  notification-service:
+    image: kennyack/notification-service:v2
+    container_name: notification-service
+    ports:
+      - "8086:8086"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - JAVA_OPTS=-Xms64m -Xmx256m
+      - SPRING_DATASOURCE_URL=jdbc:mysql://notification-db:3306/notificationdb?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-service:5000/eureka/
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=salon-kafka:9092
+    depends_on:
+      eureka-service:
+        condition: service_healthy
+      notification-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8086/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - salon-network
+
+  review-service:
+    image: kennyack/review-service:v2
+    container_name: review-service
+    ports:
+      - "8087:8087"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - JAVA_OPTS=-Xms64m -Xmx256m
+      - SPRING_DATASOURCE_URL=jdbc:mysql://review-db:3306/reviewdb?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-service:5000/eureka/
+    depends_on:
+      eureka-service:
+        condition: service_healthy
+      review-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8087/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - salon-network
+
+  # ================================
+  # KAFKA INFRASTRUCTURE
+  # ================================
+  salon-zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.0
+    container_name: salon-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - salon-network
+
+  salon-kafka:
+    image: confluentinc/cp-kafka:7.3.0
+    container_name: salon-kafka
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    depends_on:
+      - salon-zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'salon-zookeeper:2181'
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://salon-kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - salon-network
+
+# ================================
+# VOLUMES
+# ================================
+#volumes:
+#  user-db-data:
+#  salon-db-data:
+#  category-db-data:
+#  services-db-data:
+#  booking-db-data:
+#  payment-db-data:
+#  notification-db-data:
+#  review-db-data:
+
+# ================================
+# NETWORKS
+# ================================
+networks:
+  salon-network:
+    driver: bridge

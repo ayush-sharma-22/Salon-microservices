@@ -7,6 +7,9 @@ import com.ayush.payment.payload.dto.BookingDTO;
 import com.ayush.payment.payload.dto.UserDTO;
 import com.ayush.payment.payload.response.PaymentLinkResponse;
 import com.ayush.payment.service.PaymentService;
+import com.ayush.payment.service.client.CategoryFeignClient;
+import com.ayush.payment.service.client.SalonFeignClient;
+import com.ayush.payment.service.client.UserFeignClient;
 import com.razorpay.Payment;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
@@ -22,10 +25,12 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/payments")
+@RequestMapping("/api/payments")
 public class PaymentController {
 
     private final PaymentService paymentService;
+    private final UserFeignClient userFeignClient;
+
 
     @Value("${stripe.api.secret}")
     private String STRIPE_SECRET_KEY;
@@ -41,12 +46,14 @@ public class PaymentController {
 
     @PostMapping("/create")
     ResponseEntity<PaymentLinkResponse> createPaymentLink(@RequestBody BookingDTO bookingDTO,
-                                                          @RequestParam PaymentMethod paymentMethod) throws StripeException, RazorpayException {
+                                                          @RequestParam PaymentMethod paymentMethod,
+                                                          @RequestHeader("Authorization") String jwt) throws StripeException, RazorpayException {
 
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(10L);
-        userDTO.setUsername("ayush");
-        userDTO.setEmail("as89sharma98@gmail.com");
+        UserDTO userDTO = userFeignClient.getUserProfile(jwt).getBody();
+
+        if (userDTO == null) {
+            throw new RuntimeException("User not found from token");
+        }
 
         PaymentLinkResponse paymentLinkResponse = paymentService.createOrder(userDTO, bookingDTO,paymentMethod);
         return ResponseEntity.ok(paymentLinkResponse);

@@ -26,4 +26,8 @@ public class BookingDTO {
     private BookingStatus status = BookingStatus.PENDING;
 
     private Integer totalPrice;
+
+    private Long salonId;
+
+    private Long customerId;
 }

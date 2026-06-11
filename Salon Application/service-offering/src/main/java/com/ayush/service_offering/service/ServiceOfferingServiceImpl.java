@@ -34,6 +34,12 @@ public class ServiceOfferingServiceImpl implements ServiceOfferingService {
             throw new ResourceNotFoundException("Salon not found");
         }
 
+        if(!categoryDTO.getSalonId().equals(salonDTO.getId())){
+            throw new APIException(
+                    "Category does not belong to your salon"
+            );
+        }
+
         if(serviceOfferingRepository
                 .existsByNameAndSalonId(
                         serviceDTO.getName(),

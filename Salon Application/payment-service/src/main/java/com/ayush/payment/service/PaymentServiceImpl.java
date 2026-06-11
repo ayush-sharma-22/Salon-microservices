@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 public class PaymentServiceImpl implements PaymentService{
 
     private final PaymentRepository paymentRepository;
+    private final com.ayush.payment.producer.PaymentEventProducer paymentEventProducer;
 
     @Value("${stripe.api.secret}")
     private String STRIPE_SECRET_KEY;
@@ -45,6 +46,19 @@ public class PaymentServiceImpl implements PaymentService{
                                            BookingDTO bookingDTO,
                                            PaymentMethod paymentMethod) throws RazorpayException, StripeException {
 
+        if (bookingDTO.getTotalPrice() == null) {
+            throw new RuntimeException("Total price is null");
+        }
+        if (bookingDTO.getSalonId() == null) {
+            throw new RuntimeException("Salon ID is null");
+        }
+        if (bookingDTO.getId() == null) {
+            throw new RuntimeException("Booking ID is null");
+        }
+        if (userDTO.getId() == null) {
+            throw new RuntimeException("User ID is null");
+        }
+
         Long amount =(long) bookingDTO.getTotalPrice();
 
         PaymentOrder order = new PaymentOrder();
@@ -53,6 +67,7 @@ public class PaymentServiceImpl implements PaymentService{
         order.setAmount(amount);
         order.setBookingId(bookingDTO.getId());
         order.setSalonId(bookingDTO.getSalonId());
+
         order.setPaymentMethod(paymentMethod);
         order.setStatus(PaymentOrderStatus.PENDING);
 
@@ -159,6 +174,14 @@ public class PaymentServiceImpl implements PaymentService{
     public Boolean proceedPayment(PaymentOrder paymentOrder,
                                   String paymentId, String paymentLinkId) throws RazorpayException {
 
+        if (paymentOrder == null) {
+            throw new IllegalArgumentException("Payment order not found for paymentLinkId: " + paymentLinkId);
+        }
+
+        if (paymentOrder.getStatus().equals(PaymentOrderStatus.SUCCESS)) {
+            return true;
+        }
+
         if(paymentOrder.getStatus().equals(PaymentOrderStatus.PENDING)){
 
             if(paymentOrder.getPaymentMethod().equals(PaymentMethod.RAZORPAY)){
@@ -169,20 +192,34 @@ public class PaymentServiceImpl implements PaymentService{
                 String status = payment.get("status");
 
                 if(status.equals("captured")){
-                    // Going to use Kafka and rabbit-queue for confirming status and
-                    // creating the notification
-
                     paymentOrder.setStatus(PaymentOrderStatus.SUCCESS);
                     paymentRepository.save(paymentOrder);
+                    publishPaymentSuccessEvent(paymentOrder, paymentId);
                     return true;
                 }
                 return false;
             }else{
                 paymentOrder.setStatus(PaymentOrderStatus.SUCCESS);
                 paymentRepository.save(paymentOrder);
+                publishPaymentSuccessEvent(paymentOrder, paymentId);
                 return true;
             }
         }
         return false;
+    }
+
+    private void publishPaymentSuccessEvent(PaymentOrder paymentOrder, String paymentId) {
+        try {
+            com.ayush.payment.payload.event.PaymentSuccessEvent event = new com.ayush.payment.payload.event.PaymentSuccessEvent(
+                paymentOrder.getBookingId(),
+                paymentOrder.getUserId(),
+                paymentOrder.getAmount(),
+                paymentOrder.getPaymentMethod().name(),
+                paymentId
+            );
+            paymentEventProducer.sendPaymentSuccessEvent(event);
+        } catch (Exception e) {
+            System.err.println("Failed to publish payment success event: " + e.getMessage());
+        }
     }
 }

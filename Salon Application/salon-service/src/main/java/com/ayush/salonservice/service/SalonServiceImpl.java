@@ -61,10 +61,12 @@ public class SalonServiceImpl implements SalonService {
     }
 
     @Override
-    public List<Salon> getSalonByOwnerId(Long ownerId) {
-        List<Salon> exisitingSalon = salonRepository.findByOwnerId(ownerId);
+    public Salon getSalonByOwnerId(Long ownerId) {
+        Salon exisitingSalon = salonRepository.findByOwnerId(ownerId);
         return exisitingSalon;
     }
+
+
 
     @Override
     public List<Salon> searchSalonByCity(String city) {

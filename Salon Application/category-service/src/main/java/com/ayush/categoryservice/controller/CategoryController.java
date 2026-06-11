@@ -4,6 +4,7 @@ import com.ayush.categoryservice.dto.CategoryDTO;
 import com.ayush.categoryservice.dto.SalonDTO;
 import com.ayush.categoryservice.model.Category;
 import com.ayush.categoryservice.service.CategoryService;
+import com.ayush.categoryservice.service.client.SalonFeignClient;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -16,15 +17,19 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/categories")
+@RequestMapping("/api/categories")
 public class CategoryController {
     private final CategoryService categoryService;
     private final ModelMapper modelMapper;
+    private final SalonFeignClient salonFeignClient;
+
 
     @PostMapping("/salon-owner")
-    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO) {
-        SalonDTO salonDTO = new SalonDTO();
-        salonDTO.setId(1L);
+    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO,
+                                                      @RequestHeader("Authorization") String jwt) {
+
+        SalonDTO salonDTO = salonFeignClient.getSalonByOwnerId(jwt).getBody();
+
         Category category = categoryService.createCategory(categoryDTO, salonDTO);
         CategoryDTO result = modelMapper.map(category, CategoryDTO.class);
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -37,6 +42,18 @@ public class CategoryController {
             return modelMapper.map(category, CategoryDTO.class);
 
         })).toList();
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/salon-owner")
+    public ResponseEntity<Set<CategoryDTO>> getOwnerCategories(
+            @RequestHeader("Authorization") String jwt) {
+
+        SalonDTO salonDTO = salonFeignClient.getSalonByOwnerId(jwt).getBody();
+        Set<Category> categories = categoryService.getCategoruesBySalonId(salonDTO.getId());
+        Set<CategoryDTO> result = categories.stream()
+                .map(category -> modelMapper.map(category, CategoryDTO.class))
+                .collect(Collectors.toSet());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
