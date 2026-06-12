@@ -31,6 +31,40 @@ public class AuthServiceImpl implements  AuthService {
         authResponse.setRefressToken(tokenResponse.getRefreshToken());
         authResponse.setJwtToken(tokenResponse.getAccessToken());
         authResponse.setMessage("Login successfully");
+        
+        com.ayush.userservice.enums.UserRole role = JwtRoleExtractor.getRoleFromJwt(tokenResponse.getAccessToken());
+        authResponse.setRole(role);
+
+        // Sync user with DB
+        List<User> users = userRepository.findByEmail(username);
+        if (users.isEmpty()) {
+            users = userRepository.findByUsername(username);
+        }
+
+        if (users.isEmpty()) {
+            try {
+                com.ayush.userservice.payload.dto.KeycloakUserDTO keycloakUserDTO = 
+                        keycloakService.fetchUserProfileByJwt(tokenResponse.getAccessToken());
+                if (keycloakUserDTO != null && keycloakUserDTO.getEmail() != null) {
+                    User user = new User();
+                    user.setEmail(keycloakUserDTO.getEmail());
+                    user.setUsername(keycloakUserDTO.getUsername() != null ? keycloakUserDTO.getUsername() : keycloakUserDTO.getEmail());
+                    user.setFullName((keycloakUserDTO.getFirstName() != null ? keycloakUserDTO.getFirstName() : "") + " " + (keycloakUserDTO.getLastName() != null ? keycloakUserDTO.getLastName() : ""));
+                    user.setRole(role);
+                    user.setCreatedAt(LocalDateTime.now());
+                    userRepository.save(user);
+                }
+            } catch (Exception e) {
+                System.err.println("Failed to sync new user to DB on login: " + e.getMessage());
+            }
+        } else {
+            User existingUser = users.get(0);
+            if (existingUser.getRole() != role) {
+                existingUser.setRole(role);
+                userRepository.save(existingUser);
+            }
+        }
+        
         return authResponse;
     }
 

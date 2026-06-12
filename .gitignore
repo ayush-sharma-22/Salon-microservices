@@ -1,0 +1,40 @@
+# Maven target directories
+**/target/
+target/
+*.class
+
+# Node modules
+**/node_modules/
+node_modules/
+
+# Vite / React builds
+**/dist/
+dist/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE configurations
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+.factorypath
+
+# Logs
+/logs/
+*.log
+*.err
+hs_err_pid*
+replay_pid*
+
+# OS specific files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini

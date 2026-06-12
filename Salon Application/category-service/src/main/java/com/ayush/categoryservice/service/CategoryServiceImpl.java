@@ -50,7 +50,7 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public Category deleteCategoryById(Long id) {
         Category existingCategory = categoryRepository.findById(id).orElse(null);
-        if(existingCategory!=null && Objects.equals(existingCategory.getSalonId(), id)){
+        if(existingCategory!=null){
             categoryRepository.deleteById(id);
             return existingCategory;
         }

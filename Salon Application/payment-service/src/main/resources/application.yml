@@ -24,8 +24,8 @@ stripe:
 
 razorpay:
   api:
-    key: ${RAZORPAY_API_KEY:your_razorpay_api_key_here}
-    secret: ${RAZORPAY_API_SECRET:your_razorpay_api_secret_here}
+    key: 
+    secret: 
 
 eureka:
   client:

@@ -7,6 +7,7 @@ import com.ayush.userservice.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import com.ayush.userservice.enums.UserRole;
 import java.util.List;
 
 @Service
@@ -63,6 +64,7 @@ public class UserServiceImpl implements UserService {
         if (keycloakUserDTO == null || keycloakUserDTO.getEmail() == null) {
             return null;
         }
+        UserRole role = JwtRoleExtractor.getRoleFromJwt(jwt);
         List<User> users = userRepository.findByEmail(keycloakUserDTO.getEmail());
         User user = users.isEmpty() ? null : users.get(0);
         if (user == null) {
@@ -70,9 +72,14 @@ public class UserServiceImpl implements UserService {
             user.setEmail(keycloakUserDTO.getEmail());
             user.setUsername(keycloakUserDTO.getUsername() != null ? keycloakUserDTO.getUsername() : keycloakUserDTO.getEmail());
             user.setFullName((keycloakUserDTO.getFirstName() != null ? keycloakUserDTO.getFirstName() : "") + " " + (keycloakUserDTO.getLastName() != null ? keycloakUserDTO.getLastName() : ""));
-            user.setRole(com.ayush.userservice.enums.UserRole.CUSTOMER);
+            user.setRole(role);
             user.setCreatedAt(java.time.LocalDateTime.now());
             user = userRepository.save(user);
+        } else {
+            if (user.getRole() != role) {
+                user.setRole(role);
+                user = userRepository.save(user);
+            }
         }
         return user;
     }
